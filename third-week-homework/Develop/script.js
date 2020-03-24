@@ -6,43 +6,52 @@ var letter = "abcdefghijklmnopqrstuvwxyz";
 var capitalLetter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var number ="0123456789";
 
-var passwordLength = prompt("Please choose how many characters would you like in your new password.");
-var specialCharacterChoose = confirm ("Would you like any special character in your password?");
-var letterChoose = confirm ("Would you like any lowercase letter in your password?");
-var capitalLetterChoose = confirm ("Would you like any capital letter in your password?");
-var numberChoose = confirm ("Would you like any number in your password?");
-
 
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  var passwordLength1 = prompt("Please choose how many characters would you like in your new password (from 8 to 128).");
+  if (passwordLength1 < 8 || passwordLength1 > 128) {
+    alert("Please choose a number between 8 and 128.");
+    return;
+  }
+  var specialCharacterChoose1 = confirm ("Would you like any special characters in your password?");
+  var letterChoose1 = confirm ("Would you like any lowercase letters in your password?");
+  var capitalLetterChoose1 = confirm ("Would you like any capital letters in your password?");
+  var numberChoose1 = confirm ("Would you like any numbers in your password?");
+  if(!specialCharacterChoose1 && !letterChoose1 && !capitalLetterChoose1 && !numberChoose1) {
+    alert("You must at least choose one type!");
+    return;
+  }
+  let password = generatePassword(passwordLength1, specialCharacterChoose1, letterChoose1, capitalLetterChoose1, numberChoose1);
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password;
-
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
 
-function generatePassword() {
-  var code ="";
-
-  for ( var i = 0 ; i <= passwordLength ; i++) {
-    if  (specialCharacterChoose === true && letterChoose === true  && capitalLetterChoose === true && numberChoose === true) {
-      var everything = specialCharacter.concat(letter,capitalLetter,number);
-      code = code + everything.charAt(Math.floor(Math.random() * Math.floor(everything.length-1))));
-    }
-
-    /*else if (specialCharacterChoose === true && letterChoose === true  && capitalLetterChoose === true && numberChoose === false) {
-      var part1 = specialCharacter.concat(letter,capitalLetter);
-      alert(part1.charAt(Math.floor(Math.random() * Math.floor(part1.length -1) )));
-    }*/
+function generatePassword(passwordLength, specialCharacterChoose, letterChoose, capitalLetterChoose, numberChoose) {
+  //var code ="";
+  let password = "";
+  var charList = "";
+  if(specialCharacterChoose) {
+    charList += specialCharacter;
+    password += specialCharacter[Math.floor(Math.random() * specialCharacter.length)];
   }
-  
-
-
-
-
+  if(letterChoose) {
+    charList += letter;
+    password += letter[Math.floor(Math.random() * letter.length)];
+  }
+  if(capitalLetterChoose) {
+    charList += capitalLetter;
+    password += capitalLetter[Math.floor(Math.random() * capitalLetter.length)];
+  }
+  if(numberChoose) {
+    charList += number;
+    password += number[Math.floor(Math.random() * number.length)];
+  }
+  for ( var i = password.length ; i < passwordLength ; i++) {
+    password += charList[Math.floor(Math.random() * charList.length)];
+  }
+  console.log(password);
+  return password;
 }
